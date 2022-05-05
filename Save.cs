@@ -321,10 +321,8 @@ namespace Console_Rpg_v2._0
                 string index = "Inventory" + (i + 1);
                 if (ReadSave(saveFile, index) != "null")
                 {
-                    Imp.GetInventory().AddInventory(TakeSaveWp(index));
+                    Imp.GetInventory().AddInventory(TakeSaveWp(ReadSave(saveFile,index)));
                 }
-                else
-                    break;
             }
             for (int i = 0; i < 5; i++)
             {
@@ -335,10 +333,6 @@ namespace Console_Rpg_v2._0
                 }
             }
         }
-
-
-
-
     }
 }
 
