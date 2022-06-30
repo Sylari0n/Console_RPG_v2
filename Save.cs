@@ -11,9 +11,53 @@ namespace Console_Rpg_v2._0
         private static string _dirPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\ConsoleRpgSave\\";
 
         // Create Save Directory
+
         public static void CreateSaveDir()
         {
+
             Directory.CreateDirectory(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "ConsoleRpgSave"));
+
+            // Create Switch File
+            //using (StreamWriter sw = File.AppendText(_dirPath + "switches.txt")) 
+            //{
+
+            //try
+            //{
+            //    ReadSave("switches", "save1");
+            //}
+
+            //catch
+            //{
+            //    string defaultSwitch = "save1=false\nsave1date=null\nsave2=false\nsave2date=null\nsave3=false\nsave3date=null";
+            //    sw.WriteLine(defaultSwitch);
+            //    sw.Flush();
+            //    sw.Close();
+
+            //}
+
+            if (CheckSave("switches.txt") == false)
+            {
+                StreamWriter sw = new StreamWriter(_dirPath + "switches.txt");   
+                string defaultSwitch = "save1=false\nsave1date=null\nsave2=false\nsave2date=null\nsave3=false\nsave3date=null";
+                sw.WriteLine(defaultSwitch);
+                sw.Flush();
+                sw.Close();
+                
+            }
+
+        }
+    
+
+        // Check File Existence
+        public static bool CheckSave(string saveF)
+        {
+            string path = _dirPath + saveF;
+            bool isPath = File.Exists(path);
+
+            if (isPath == true)
+                return true;
+            else
+                return false;
         }
         // Save File Length
         // private const int _saveL = 17;
@@ -49,6 +93,7 @@ namespace Console_Rpg_v2._0
                 {
                     File.Delete(_dirPath + "crsave1.txt");
                     WriteSave("switches", "save1", "false");
+                    WriteSave("switches", "save1date", "null");
                     Console.WriteLine("Save 1 succesfully deleted !");
                     Functions.skip();
                 }
@@ -66,6 +111,7 @@ namespace Console_Rpg_v2._0
                 {
                     File.Delete(_dirPath + "crsave2.txt");
                     WriteSave("switches", "save2", "false");
+                    WriteSave("switches", "save2date", "null");
                     Console.WriteLine("Save 2 succesfully deleted !");
                     Functions.skip();
                 }
@@ -83,6 +129,7 @@ namespace Console_Rpg_v2._0
                 {
                     File.Delete(_dirPath + "crsave3.txt");
                     WriteSave("switches", "save3", "false");
+                    WriteSave("switches", "save3date", "null");
                     Console.WriteLine("Save 3 succesfully deleted !");
                     Functions.skip();
                 }
@@ -123,7 +170,7 @@ namespace Console_Rpg_v2._0
                 string defaultSave = "PlayerName=null\nPlayerHp=null\nPlayerPower=null\nPlayerAgility=null\n" +
                     "PlayerActionPoint=null\nPlayerWp=null\nInventory1=null\nInventory2=null\nInventory3=null" +
                     "\nInventory4=null\nInventory5=null\nWpDurability1=null\nWpDurability2=null\nWpDurability3=null\n" +
-                    "WpDurability4=null\nWpDurability5=null";
+                    "WpDurability4=null\nWpDurability5=null\nSaveCount=null";
                 sw.WriteLine(defaultSave);
                 sw.Flush();
                 sw.Close();
@@ -137,7 +184,7 @@ namespace Console_Rpg_v2._0
                 string defaultSave = "PlayerName=null\nPlayerHp=null\nPlayerPower=null\nPlayerAgility=null\n" +
                     "PlayerActionPoint=null\nPlayerWp=null\nInventory1=null\nInventory2=null\nInventory3=null" +
                     "\nInventory4=null\nInventory5=null\nWpDurability1=null\nWpDurability2=null\nWpDurability3=null\n" +
-                    "WpDurability4=null\nWpDurability5=null";
+                    "WpDurability4=null\nWpDurability5=null\nSaveCount=null";
                 sw.WriteLine(defaultSave);
                 sw.Flush();
                 sw.Close();
@@ -151,7 +198,7 @@ namespace Console_Rpg_v2._0
                 string defaultSave = "PlayerName=null\nPlayerHp=null\nPlayerPower=null\nPlayerAgility=null\n" +
                     "PlayerActionPoint=null\nPlayerWp=null\nInventory1=null\nInventory2=null\nInventory3=null" +
                     "\nInventory4=null\nInventory5=null\nWpDurability1=null\nWpDurability2=null\nWpDurability3=null\n" +
-                    "WpDurability4=null\nWpDurability5=null";
+                    "WpDurability4=null\nWpDurability5=null\nSaveCount=null";
                 sw.WriteLine(defaultSave);
                 sw.Flush();
                 sw.Close();
@@ -306,6 +353,18 @@ namespace Console_Rpg_v2._0
                 temp += i;
                 WriteSave(saveFile, temp, Convert.ToString(Imp.GetInventory().IgetWeapon(i).WpDurability));
             }
+            if (ReadSave(saveFile, "SaveCount") == "null")
+            {
+                WriteSave(saveFile, "SaveCount", "1");
+            }
+            else
+            {
+                int temp = Convert.ToInt32(ReadSave(saveFile, "SaveCount"));
+                temp++;
+                WriteSave(saveFile, "SaveCount", Convert.ToString(temp));
+                
+            }
+
         }
 
         public static void LoadSave(string saveFile)

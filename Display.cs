@@ -10,7 +10,7 @@ namespace Console_Rpg_v2._0
 
         static void Main(string[] args)
         {
-            //Save.CreateSave();
+            Save.CreateSaveDir();
             int selection = 0;
             int saveH = new int();
             string temp;
@@ -99,9 +99,6 @@ namespace Console_Rpg_v2._0
 
                         Console.Clear();
                     }
-
-
-
 
                     Console.Clear();
                     Console.WriteLine("Who will you be ?");
